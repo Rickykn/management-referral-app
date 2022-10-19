@@ -1,5 +1,11 @@
 # management-referral-app
 
+# RUN PROJECT
+
+1. npm install
+2. create and setup .env
+3. npm start
+
 # END-POINT API
 
 http://localhost:2000/users/register (POST)
