@@ -7,6 +7,7 @@ dotenv.config();
 const PORT = process.env.PORT;
 
 const { sequelize } = require("./lib/sequelize");
+const { userRoutes, referralRoutes } = require("./routes");
 
 sequelize.sync({ alter: true });
 
@@ -17,6 +18,9 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("<h1>Management Referral API</h1>");
 });
+
+app.use("/users", userRoutes);
+app.use("/referral", referralRoutes);
 
 app.listen(PORT, () => {
   console.log("Listening in port", PORT);
