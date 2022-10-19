@@ -49,6 +49,39 @@ class referralService extends Service {
       });
     }
   };
+  static deleteReferralById = async (req) => {
+    try {
+      const { id } = req.params;
+
+      const findReferral = await Referral.findOne({
+        where: {
+          id,
+        },
+      });
+
+      if (!findReferral) {
+        return this.handleError({
+          message: "Data Not Found",
+          statusCode: 400,
+        });
+      }
+      await Referral.destroy({
+        where: {
+          id,
+        },
+      });
+      return this.handleSuccess({
+        message: "Deleted Success",
+        statusCode: 200,
+      });
+    } catch (err) {
+      console.log(err);
+      return this.handleError({
+        message: "Server Error",
+        statusCode: 500,
+      });
+    }
+  };
 }
 
 module.exports = referralService;

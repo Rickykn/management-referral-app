@@ -24,9 +24,25 @@ const referralController = {
 
       if (!serviceResult.success) throw serviceResult;
 
-      return res.status(serviceResult.statusCode || 201).json({
+      return res.status(serviceResult.statusCode || 200).json({
         message: serviceResult.message,
         result: serviceResult.data,
+      });
+    } catch (err) {
+      return res.status(err.statusCode || 500).json({
+        message: err.message,
+      });
+    }
+  },
+
+  deleteReferral: async (req, res) => {
+    try {
+      const serviceResult = await referralService.deleteReferralById(req);
+
+      if (!serviceResult.success) throw serviceResult;
+
+      return res.status(serviceResult.statusCode || 200).json({
+        message: serviceResult.message,
       });
     } catch (err) {
       return res.status(err.statusCode || 500).json({
