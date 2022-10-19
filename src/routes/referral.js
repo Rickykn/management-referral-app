@@ -9,5 +9,6 @@ router.delete(
   authorizedLoggedInUser,
   referralController.deleteReferral
 );
+router.patch("/:id", authorizedLoggedInUser, referralController.editReferral);
 
 module.exports = router;

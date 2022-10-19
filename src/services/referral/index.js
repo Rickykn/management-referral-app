@@ -35,13 +35,25 @@ class referralService extends Service {
 
   static getAllReferral = async (req) => {
     try {
-      const findAllReferral = await Referral.findAll();
+      const { referralCode = "" } = req.query;
+
+      delete req.query.referralCode;
+
+      const findAllReferral = await Referral.findAll({
+        where: {
+          ...req.query,
+          referral_code: {
+            [Op.like]: `%${referralCode}%`,
+          },
+        },
+      });
+
       return this.handleSuccess({
         message: "Get All Data",
         statusCode: 200,
         data: findAllReferral,
       });
-    } catch (error) {
+    } catch (err) {
       console.log(err);
       return this.handleError({
         message: "Server Error",
@@ -49,6 +61,7 @@ class referralService extends Service {
       });
     }
   };
+
   static deleteReferralById = async (req) => {
     try {
       const { id } = req.params;
@@ -73,6 +86,51 @@ class referralService extends Service {
       return this.handleSuccess({
         message: "Deleted Success",
         statusCode: 200,
+      });
+    } catch (err) {
+      console.log(err);
+      return this.handleError({
+        message: "Server Error",
+        statusCode: 500,
+      });
+    }
+  };
+
+  static editReferral = async (req) => {
+    try {
+      const { referral_code, type, description } = req.body;
+      const { id } = req.params;
+
+      const findReferral = await Referral.findOne({
+        where: {
+          id,
+        },
+      });
+
+      if (!findReferral) {
+        return this.handleError({
+          message: "Data Not Found",
+          statusCode: 400,
+        });
+      }
+
+      await Referral.update(
+        {
+          referral_code,
+          type,
+          description,
+        },
+        {
+          where: { id },
+        }
+      );
+
+      const newDataReferral = await Referral.findByPk(id);
+
+      return this.handleSuccess({
+        message: "Edited Referral!",
+        statusCode: 200,
+        data: newDataReferral,
       });
     } catch (err) {
       console.log(err);
