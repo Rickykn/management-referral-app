@@ -1,5 +1,7 @@
 # management-referral-app
 
+# END-POINT API
+
 http://localhost:2000/users/register (POST)
 Body :{
 "username":"Veronika Djuliana",
@@ -34,6 +36,8 @@ Body:{
 "type":"asd",
 "description":"asd asd"
 }
+
+# ENV SETUP
 
 ENV setup:
 PORT=2000
